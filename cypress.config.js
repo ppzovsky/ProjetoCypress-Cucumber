@@ -7,7 +7,7 @@ module.exports = defineConfig({
       on('file:preprocessor', cucumber())
     },
     specPattern: [
-      'cypress/e2e/step_definitions/*.feature',
+      'cypress/e2e/cucumber_tests/*.feature',
       'cypress/e2e/*.cy.js'
     ]
   },

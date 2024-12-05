@@ -5,7 +5,7 @@ describe('Testes Compra de Tickets', () => {
   beforeEach(() => {
     cy.abreSite(massa.url);
   });
-  it.only('Compra de 1 ticket do tipo General Admission usando a opção Friend', () => {
+  it('Compra de 1 ticket do tipo General Admission usando a opção Friend', () => {
     cy.preencheDadosPessoais(massa.firstName, massa.lastName, massa.email);
     cy.escolheOpcaoDeTicket('1','#general', '#friend');
     cy.confirmaTickets();

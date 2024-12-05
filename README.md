@@ -41,7 +41,7 @@ Siga os passos abaixo para configurar o projeto no seu ambiente local:
    npm install
    ```
 
-- **`cypress/e2e/step_definitions/`**: Contém os arquivos que definem as etapas (steps) para os testes Cucumber.
+- **`cypress/e2e/cucumber_tests/`**: Contém os arquivos que definem as etapas (steps) para os testes Cucumber.
 - **`cypress/e2e/features/`**: Contém os arquivos `.feature`, onde os cenários de teste são escritos em Gherkin.
 - **`cypress.config.js`**: Arquivo de configuração do Cypress.
 - **`package.json`**: Contém as dependências e scripts do projeto.
