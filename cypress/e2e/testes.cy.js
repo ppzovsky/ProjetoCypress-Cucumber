@@ -1,4 +1,4 @@
-import massa from '../fixtures/example.json'
+import massa from '../fixtures/massa.json'
 import '../support/commands' 
 
 describe('Testes Compra de Tickets', () => {
