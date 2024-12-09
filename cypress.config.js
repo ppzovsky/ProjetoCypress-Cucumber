@@ -10,8 +10,8 @@ module.exports = defineConfig({
     videosFolder: "cypress/evidences/videos",
     screenshotsFolder: "cypress/evidences/screenshots",
     specPattern: [
-      'cypress/e2e/cucumber_tests/*.feature',
-      'cypress/e2e/*.cy.js'
+      'cypress/e2e/**/*.feature',
+      'cypress/e2e/**/*.cy.js'
     ],
     reporter: "mochawesome",
     reporterOptions: {
