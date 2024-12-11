@@ -1,0 +1,20 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: Checkout@1
+
+  - task: UseNode@2
+    inputs:
+      versionSpec: '16.x'
+
+  - script: npm install
+    displayName: 'Install Dependencies'
+
+  - script: npx cypress run
+    displayName: 'Run Cypress Tests'
