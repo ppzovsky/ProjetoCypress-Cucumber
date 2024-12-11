@@ -4,12 +4,12 @@ trigger:
       - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'Default'
 
 steps:
   - task: Checkout@1
 
-  - task: UseNode@2
+  - task: NodeTool@1
     inputs:
       versionSpec: '16.x'
 
