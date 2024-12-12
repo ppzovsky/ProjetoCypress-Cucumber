@@ -1,20 +1,13 @@
 trigger:
-  branches:
-    include:
-      - main
+  - main
 
 pool:
-  name: 'Default'
+  vmImage: ubuntu-latest
 
 steps:
-  - task: Checkout@1
-
-  - task: NodeTool@1
-    inputs:
-      versionSpec: '16.x'
-
   - script: npm install
     displayName: 'Install Dependencies'
 
   - script: npx cypress run
     displayName: 'Run Cypress Tests'
+
