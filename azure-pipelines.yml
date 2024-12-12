@@ -2,7 +2,7 @@ trigger:
   - main
 
 pool:
-  name: maquinapessoal
+  name: maquinalinux
 
 steps:
   - script: npm install
