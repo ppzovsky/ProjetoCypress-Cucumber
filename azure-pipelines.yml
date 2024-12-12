@@ -2,7 +2,7 @@ trigger:
   - main
 
 pool:
-  name: maquinapessoal
+  name: Azure Pipelines
 
 steps:
   - script: npm install
