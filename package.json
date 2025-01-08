@@ -11,7 +11,7 @@
     "mochawesome": "^7.1.3"
   },
   "cypress-cucumber-preprocessor": {
-    "nonGlobalStepDefinitions": true,
-    "stepDefinitions": "cypress/e2e/cucumber_tests"
+    "nonGlobalStepDefinitions": false,
+    "stepDefinitions": "cypress/e2e/cucumber_tests/steps"
   }
 }
