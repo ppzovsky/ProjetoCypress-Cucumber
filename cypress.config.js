@@ -13,13 +13,10 @@ module.exports = defineConfig({
       'cypress/e2e/**/*.feature',
       'cypress/e2e/**/*.cy.js'
     ],
-    reporter: "mochawesome",
-    reporterOptions: {
-      reportDir: "cypress/report/mochawesome-report",
-      overwrite: false, 
-      html: true,       
-      json: true,       
-      timestamp: "mm-dd-yyyy_HH-MM" 
-    }
+    "reporter": "junit",
+    "reporterOptions": {
+    "mochaFile": "results/junit-[hash].xml",
+    "toConsole": false
+  }
   },
 });
