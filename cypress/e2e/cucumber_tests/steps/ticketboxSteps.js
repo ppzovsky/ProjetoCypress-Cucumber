@@ -1,5 +1,5 @@
 import { Given, When, Then, And } from 'cypress-cucumber-preprocessor/steps';
-import massa from '../../../fixtures/example.json'
+import massa from '../../../fixtures/massa.json'
 
 Given("que preencho meus dados pessoais com {string}, {string} e {string}", function (nome, sobrenome, email) {
   cy.visit(massa.url);
