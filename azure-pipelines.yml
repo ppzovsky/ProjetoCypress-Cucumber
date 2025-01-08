@@ -1,0 +1,13 @@
+trigger:
+  - main
+
+pool:
+  name: maquinalinux
+
+steps:
+  - script: npm install
+    displayName: 'Install Dependencies'
+
+  - script: npx cypress run
+    displayName: 'Run Cypress Tests'
+

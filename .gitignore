@@ -1,6 +1,6 @@
 # Diretórios e arquivos criados pelo Cypress
-cypress/screenshots/
-cypress/videos/
+cypress/evidences/screenshots
+cypress/evidences/videos/
 
 # Dependências instaladas pelo npm
 node_modules/
