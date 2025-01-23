@@ -19,8 +19,8 @@ module.exports = defineConfig({
       "mochaFile": "results/junit-[hash].xml",
       "toConsole": true
     },
-    // env: {
-    //   testCaseIdRegex: /\d+/, 
-    // },
+    env: {
+      testCaseIdRegex: /\d+/, 
+    },
   },
 });
