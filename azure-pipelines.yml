@@ -11,7 +11,7 @@ steps:
   - script: npx cypress --version
     displayName: 'Verificando versão do Cypress'
 
-  - script: npx cypress run --headless --browser edge --verbose
+  - script: npx cypress run --headless --browser edge 
     displayName: 'Rodando testes Cypress'
 
   - task: PublishTestResults@2
