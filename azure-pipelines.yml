@@ -8,7 +8,7 @@ steps:
   - script: npm install
     displayName: 'Instalando dependencias'
 
-  - script: npx cypress run --browser edge
+  - script: npx cypress run
     displayName: 'Rodando testes'
 
   - task: PublishTestResults@2
