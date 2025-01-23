@@ -1,6 +1,7 @@
 # Diretórios e arquivos criados pelo Cypress
 cypress/evidences/screenshots
 cypress/evidences/videos/
+results
 
 # Dependências instaladas pelo npm
 node_modules/
