@@ -6,7 +6,7 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       on('file:preprocessor', cucumber());
     },
-    video: true,
+    video: false,
     videosFolder: "cypress/evidences/videos",
     
     screenshotsFolder: "cypress/evidences/screenshots",

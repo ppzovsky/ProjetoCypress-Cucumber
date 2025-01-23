@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="31.203" tests="5" failures="0">
+  <testsuite name="Root Suite" timestamp="2025-01-23T17:16:31" tests="0" file="cypress\e2e\cucumber_tests\ticketbox.feature" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Compra de tickets" timestamp="2025-01-23T17:16:31" tests="5" time="31.192" failures="0">
+    <testcase name="Compra de tickets Compra de 1 ticket do tipo General Admission usando a opção Friend" time="7.522" classname="Compra de 1 ticket do tipo General Admission usando a opção Friend">
+    </testcase>
+    <testcase name="Compra de tickets Compra de 2 ticket do tipo VIP usando a opção Publication" time="6.086" classname="Compra de 2 ticket do tipo VIP usando a opção Publication">
+    </testcase>
+    <testcase name="Compra de tickets Compra de 3 ticket do tipo VIP usando a opção Social Media" time="4.329" classname="Compra de 3 ticket do tipo VIP usando a opção Social Media">
+    </testcase>
+    <testcase name="Compra de tickets Compra de 4 ticket do tipo General Admission usando a opção Publication" time="3.991" classname="Compra de 4 ticket do tipo General Admission usando a opção Publication">
+    </testcase>
+    <testcase name="Compra de tickets Validar Funcionamento do Botao Reset" time="3.870" classname="Validar Funcionamento do Botao Reset">
+    </testcase>
+  </testsuite>
+</testsuites>
