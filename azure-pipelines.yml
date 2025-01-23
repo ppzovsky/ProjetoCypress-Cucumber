@@ -6,15 +6,16 @@ pool:
 
 steps:
   - script: npm install
-    displayName: 'Install Dependencies'
+    displayName: 'Instalando dependencias'
 
   - script: npx cypress run
-    displayName: 'Run Cypress Tests'
+    displayName: 'Rodando testes'
 
   - task: PublishTestResults@2
     inputs:
       testResultsFiles: 'results/junit-*.xml'
-      testRunTitle: 'Cypress Test Results'
+      testRunTitle: 'Resultados Cypress'
+      testRunner: 'JUnit'
 
   - task: PublishPipelineArtifact@1
     inputs:

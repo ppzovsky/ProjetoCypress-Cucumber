@@ -8,15 +8,19 @@ module.exports = defineConfig({
     },
     video: true,
     videosFolder: "cypress/evidences/videos",
+    
     screenshotsFolder: "cypress/evidences/screenshots",
     specPattern: [
       'cypress/e2e/**/*.feature',
       'cypress/e2e/**/*.cy.js'
     ],
-    "reporter": "junit",
+    "reporter": "mocha-junit-reporter",
     "reporterOptions": {
-    "mochaFile": "results/junit-[hash].xml",
-    "toConsole": false
-  }
+      "mochaFile": "results/junit-[hash].xml",
+      "toConsole": true
+    },
+    env: {
+      testCaseIdRegex: /\d+/, 
+    },
   },
 });
