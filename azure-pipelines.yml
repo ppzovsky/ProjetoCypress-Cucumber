@@ -8,8 +8,11 @@ steps:
   - script: npm install
     displayName: 'Instalando dependencias'
 
-  - script: npx cypress run
-    displayName: 'Rodando testes'
+  - script: npx cypress --version
+    displayName: 'Verificando versão do Cypress'
+
+  - script: npx cypress run --headless --browser edge --verbose
+    displayName: 'Rodando testes Cypress'
 
   - task: PublishTestResults@2
     inputs:
