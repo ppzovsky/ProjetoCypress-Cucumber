@@ -17,10 +17,8 @@ module.exports = defineConfig({
     "reporter": "mocha-junit-reporter",
     "reporterOptions": {
       "mochaFile": "results/junit-[hash].xml",
-      "toConsole": true
-    },
-    env: {
-      testCaseIdRegex: /\d+/, 
-    },
+      "toConsole": true,
+      "testCaseSwitchClassnameAndName": true
+    }
   },
 });
