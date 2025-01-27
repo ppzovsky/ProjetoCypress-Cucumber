@@ -1,0 +1,26 @@
+{
+  "cypress\\e2e\\cucumber_tests\\ticketbox.feature": {
+    "Compra de tickets Compra de 1 ticket do tipo General Admission usando a opção Friend": "passed",
+    "Compra de tickets Compra de 2 ticket do tipo VIP usando a opção Publication": "passed",
+    "Compra de tickets Compra de 3 ticket do tipo VIP usando a opção Social Media": "passed",
+    "Compra de tickets Compra de 4 ticket do tipo General Admission usando a opção Publication": "passed",
+    "Compra de tickets Validar Funcionamento do Botao Reset": "passed"
+  },
+  "cypress\\e2e\\testes.cy.js": {
+    "Compra de Tickets Compra de 1 ticket do tipo General Admission usando a opção Friend": "passed",
+    "Compra de Tickets Compra de 2 ticket do tipo VIP usando a opção Publication": "passed",
+    "Compra de Tickets Compra de 3 ticket do tipo VIP usando a opção Social Media": "passed",
+    "Compra de Tickets Compra de 4 ticket do tipo General Admission usando a opção Publication": "passed",
+    "Compra de Tickets Validar Funcionamento do Botao Reset": "passed"
+  },
+  "totals": {
+    "suites": 2,
+    "tests": 10,
+    "failed": 0,
+    "passed": 10,
+    "pending": 0,
+    "skipped": 0
+  }
+}
+
+

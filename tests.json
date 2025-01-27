@@ -1,0 +1,130 @@
+ {
+      testPlan: { id: 6, name: 'Estudos iLAB Team_Stories_Sprint 1' },
+      project: {
+        id: '816a6a44-55ca-4afb-b129-c78108c45228',
+        name: 'Estudos iLAB',
+        state: 'unchanged',
+        visibility: 'unchanged',
+        lastUpdateTime: '0001-01-01T00:00:00'
+      },
+      testSuite: { id: 16, name: '14 : TicketBox' },
+      workItem: {
+        id: 15,
+        name: 'Compra de 1 ticket do tipo General Admission usando a opção Friend',
+        workItemFields: [Array]
+      },
+      pointAssignments: [ [Object] ],
+      links: {
+        testPoints: [Object],
+        configuration: [Object],
+        _self: [Object],
+        sourcePlan: [Object],
+        sourceSuite: [Object],
+        sourceProject: [Object]
+      }
+    },
+    {
+      testPlan: { id: 6, name: 'Estudos iLAB Team_Stories_Sprint 1' },
+      project: {
+        id: '816a6a44-55ca-4afb-b129-c78108c45228',
+        name: 'Estudos iLAB',
+        state: 'unchanged',
+        visibility: 'unchanged',
+        lastUpdateTime: '0001-01-01T00:00:00'
+      },
+      testSuite: { id: 16, name: '14 : TicketBox' },
+      workItem: {
+        id: 17,
+        name: 'Compra de 2 ticket do tipo VIP usando a opção Publication',
+        workItemFields: [Array]
+      },
+      order: 1,
+      pointAssignments: [ [Object] ],
+      links: {
+        testPoints: [Object],
+        configuration: [Object],
+        _self: [Object],
+        sourcePlan: [Object],
+        sourceSuite: [Object],
+        sourceProject: [Object]
+      }
+    },
+    {
+      testPlan: { id: 6, name: 'Estudos iLAB Team_Stories_Sprint 1' },
+      project: {
+        id: '816a6a44-55ca-4afb-b129-c78108c45228',
+        name: 'Estudos iLAB',
+        state: 'unchanged',
+        visibility: 'unchanged',
+        lastUpdateTime: '0001-01-01T00:00:00'
+      },
+      testSuite: { id: 16, name: '14 : TicketBox' },
+      workItem: {
+        id: 18,
+        name: 'Compra de 3 ticket do tipo VIP usando a opção Social Media',
+        workItemFields: [Array]
+      },
+      order: 2,
+      pointAssignments: [ [Object] ],
+      links: {
+        testPoints: [Object],
+        configuration: [Object],
+        _self: [Object],
+        sourcePlan: [Object],
+        sourceSuite: [Object],
+        sourceProject: [Object]
+      }
+    },
+    {
+      testPlan: { id: 6, name: 'Estudos iLAB Team_Stories_Sprint 1' },
+      project: {
+        id: '816a6a44-55ca-4afb-b129-c78108c45228',
+        name: 'Estudos iLAB',
+        state: 'unchanged',
+        visibility: 'unchanged',
+        lastUpdateTime: '0001-01-01T00:00:00'
+      },
+      testSuite: { id: 16, name: '14 : TicketBox' },
+      workItem: {
+        id: 19,
+        name: 'Compra de 4 ticket do tipo General Admission usando a opção Publication',
+        workItemFields: [Array]
+      },
+      order: 3,
+      pointAssignments: [ [Object] ],
+      links: {
+        testPoints: [Object],
+        configuration: [Object],
+        _self: [Object],
+        sourcePlan: [Object],
+        sourceSuite: [Object],
+        sourceProject: [Object]
+      }
+    },
+    {
+      testPlan: { id: 6, name: 'Estudos iLAB Team_Stories_Sprint 1' },
+      project: {
+        id: '816a6a44-55ca-4afb-b129-c78108c45228',
+        name: 'Estudos iLAB',
+        state: 'unchanged',
+        visibility: 'unchanged',
+        lastUpdateTime: '0001-01-01T00:00:00'
+      },
+      testSuite: { id: 16, name: '14 : TicketBox' },
+      workItem: {
+        id: 20,
+        name: 'Validar funcionamento do botão Reset',
+        workItemFields: [Array]
+      },
+      order: 4,
+      pointAssignments: [ [Object] ],
+      links: {
+        testPoints: [Object],
+        configuration: [Object],
+        _self: [Object],
+        sourcePlan: [Object],
+        sourceSuite: [Object],
+        sourceProject: [Object]
+      }
+    }
+  ]

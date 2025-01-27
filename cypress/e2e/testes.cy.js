@@ -1,7 +1,7 @@
 import massa from '../fixtures/massa.json'
 import '../support/commands' 
 
-describe('Testes Compra de Tickets', () => {
+describe('Compra de Tickets', () => {
   beforeEach(() => {
     cy.abreSite(massa.url);
   });

@@ -5,23 +5,34 @@ pool:
   name: maquinapessoal
 
 steps:
+  # Passo 1: Instalar dependências
   - script: npm install
     displayName: 'Instalando dependencias'
 
+  # Passo 2: Verificar versão do Cypress
   - script: npx cypress --version
     displayName: 'Verificando versão do Cypress'
 
+  # Passo 3: Executar testes Cypress em modo headless
   - script: npx cypress run --headless --browser edge
     displayName: 'Rodando testes Cypress'
 
+  # Passo 4: Executar script para associar casos de teste
+  - script: node utils/associarTests.js
+    displayName: 'Associar casos de teste'
+
+  # Passo 5: Publicar resultados dos testes no formato JUnit
   - task: PublishTestResults@2
     inputs:
-      testResultsFiles: 'results/junit-*.xml'
+      testResultsFiles: 'results/junit-*.xml' # Caminho para os arquivos JUnit
       testRunTitle: 'Resultados Cypress'
       testRunner: 'JUnit'
+    condition: succeededOrFailed() # Publica resultados mesmo se alguns testes falharem
 
+  # Passo 6: Publicar evidências (vídeos e screenshots) como artefato
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: 'cypress/evidences'
+      targetPath: 'cypress/evidences' # Caminho para as evidências
       artifact: 'CypressEvidences'
       publishLocation: 'pipeline'
+    condition: succeededOrFailed() # Publica artefatos mesmo se alguns testes falharem
