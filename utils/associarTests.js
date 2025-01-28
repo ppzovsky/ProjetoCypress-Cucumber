@@ -41,6 +41,7 @@ async function buscarResultadosTestRun(testRunId) {
   }
 }
 
+//Funcao que muda o status de um testrun (o que permite que eu faca atualizacoes nela)
 async function reabrirTestRun(testRunId) {
   const url = `https://dev.azure.com/${org}/${project}/_apis/test/runs/${testRunId}?api-version=7.1-preview.3`;
   const body = {
@@ -72,8 +73,10 @@ async function buscarCasosDeTeste() {
 
 // Função para associar os resultados
 async function associarResultados(testRunResults, testCases) {
+
   const url = `https://dev.azure.com/${org}/${project}/_apis/test/runs/${testRunResults[0].testRun.id}/results?api-version=7.1-preview.6`;
-  console.log(testRunResults)
+  // console.log(testRunResults)
+
   const results = testRunResults
     .map((result) => {
       // Encontrar o caso de teste correspondente
@@ -82,9 +85,12 @@ async function associarResultados(testRunResults, testCases) {
       if (testCase) {
         const now = new Date();
 
-        // Aqui você precisa mapear o Test Point corretamente com base no Test Plan
+        //o testpoint é um marcados dos casos de teste que define suas execuções
         const testPoint = testCase.pointAssignments[0].id;
+
+
         if (testPoint) {
+          //quando ele existe posso atribuir ele a execução desejada
           return {
             id: result.id,
             project: {
@@ -138,6 +144,7 @@ async function associarResultados(testRunResults, testCases) {
 }
 
 
+//Função para retornar o status da execução ao completed
 async function finalizarTestRun(testRunId) {
   const url = `https://dev.azure.com/${org}/${project}/_apis/test/runs/${testRunId}?api-version=7.1-preview.3`;
   const body = {
@@ -154,26 +161,23 @@ async function finalizarTestRun(testRunId) {
 }
 
 
-// Função principal
 async function main() {
   try {
     // Buscar test runs
     console.log('Buscando test runs...')
     const testRuns = await buscarTestRuns();
 
-    // Encontrar o test run específico
-    // Pega o test run com o maior ID
+    // Pega o o ultimo test run executado
     const lastTestRun = testRuns
     .sort((a, b) => b.id - a.id)[0];
 
     const testRunId = lastTestRun.id;
-    // Ajuste o critério conforme necessário
 
-    // Buscar resultados do test run específico
+    // Buscar resultados do test run 
     console.log('Buscando resultados do test run...')
     const testRunResults = await buscarResultadosTestRun(testRunId);
 
-    //Abrir test run para fazer a associacao 
+    //Muda o status do test run para fazer a associacao 
     console.log('Abrindo test run...')
     await reabrirTestRun(testRunId);
 
@@ -181,11 +185,11 @@ async function main() {
     console.log('Buscando casos de teste...')
     const testCases = await buscarCasosDeTeste();
 
-    // Associar resultados aos casos de teste
+    // Associa os resultados aos casos de teste
     console.log('Associando resultados aos casos de teste...')
     await associarResultados(testRunResults, testCases);
 
-    //Finallizando test run
+    //Finalizando test run
     console.log('Fechando execucao do teste')
     await finalizarTestRun(testRunId);
 
