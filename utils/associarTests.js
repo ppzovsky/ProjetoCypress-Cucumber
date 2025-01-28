@@ -7,147 +7,191 @@ const project = 'Estudos%20iLAB'; // Nome do projeto
 const planId = '6'; // ID do plano de testes
 const suiteId = '16'; // ID da suíte de testes
 const pat = 'DBDTHdJ5GUmVWNQW9Hh6Vm45nnCxq3QAcBfiElBHEn2mx5deODHdJQQJ99BAACAAAAASKsUvAAASAZDO7kI1'; // Token de acesso
-const testResultsFile = 'results.json'; // Arquivo de resultados dos testes
-const testRunID = ''; //ID do test Run
 
 const auth = {
   username: 'ppzovsky',
   password: pat,
 };
 
-// Busca e recupera casos de teste
-async function recuperaCasosdeTeste() {
+// Função para buscar test runs
+async function buscarTestRuns() {
+  const url = `https://dev.azure.com/${org}/${project}/_apis/test/runs?api-version=7.1-preview.3`;
+  try {
+    const response = await axios.get(url, { auth });
+    console.log('Test runs encontrados:');
+    console.log(response.data.value);
+    return response.data.value; // Retorna todos os test runs
+  } catch (error) {
+    console.error('Erro ao buscar test runs:', error.response?.data || error.message);
+    throw error;
+  }
+}
+
+// Função para buscar resultados de um test run
+async function buscarResultadosTestRun(testRunId) {
+  const url = `https://dev.azure.com/${org}/${project}/_apis/test/runs/${testRunId}/results?api-version=7.1-preview.6`;
+  try {
+    const response = await axios.get(url, { auth });
+    console.log('Resultados do test run encontrados');
+    console.log(response.data.value);
+    return response.data.value; // Retorna os resultados
+  } catch (error) {
+    console.error('Erro ao buscar resultados do test run:', error.response?.data || error.message);
+    throw error;
+  }
+}
+
+async function reabrirTestRun(testRunId) {
+  const url = `https://dev.azure.com/${org}/${project}/_apis/test/runs/${testRunId}?api-version=7.1-preview.3`;
+  const body = {
+    state: 'InProgress',
+  };
+
+  try {
+    await axios.patch(url, body, { auth });
+    console.log(`Test run ${testRunId} reaberto com sucesso.`);
+  } catch (error) {
+    console.error('Erro ao reabrir o test run:', error.response?.data || error.message);
+    throw error;
+  }
+}
+
+// Função para buscar casos de teste no plano
+async function buscarCasosDeTeste() {
   const url = `https://dev.azure.com/${org}/${project}/_apis/testplan/Plans/${planId}/Suites/${suiteId}/TestCase`;
   try {
     const response = await axios.get(url, { auth });
-    // console.log('Casos de teste recuperados com sucesso!', response.data.value);
-    return response.data.value;
+    console.log('Casos de teste encontratos');
+    // console.log(response.data.value);
+    return response.data.value; // Retorna os casos de teste
   } catch (error) {
-    console.error('Erro ao buscar casos de teste:', error.response ? error.response.data : error.message);
+    console.error('Erro ao buscar casos de teste:', error.response?.data || error.message);
     throw error;
   }
 }
 
-// Cria execução uma test run
-async function criaTestRun() {
-  const url = `https://dev.azure.com/${org}/${project}/_apis/test/runs?api-version=7.1-preview.3`;
-  const body = {
-    name: `Execução de Testes Automatizados - ${new Date().toISOString()}`,
-    plan: {
-      id: planId,
-    },
-  };
-  try {
-    const response = await axios.post(url, body, { auth });
-    console.log('Execução de teste criada com sucesso! ID: '+ response.data.id);
-    // testRunID = response.data.id;
-    return response.data.id;
-  } catch (error) {
-    console.error('Erro ao criar execução de teste:', error.response ? error.response.data : error.message);
-    throw error;
-  }
-}
+// Função para associar os resultados
+async function associarResultados(testRunResults, testCases) {
+  const url = `https://dev.azure.com/${org}/${project}/_apis/test/runs/${testRunResults[0].testRun.id}/results?api-version=7.1-preview.6`;
+  console.log(testRunResults)
+  const results = testRunResults
+    .map((result) => {
+      // Encontrar o caso de teste correspondente
+      const testCase = testCases.find(tc => tc.workItem.name === result.automatedTestName);
 
-// Faz a relação entre o caso no plano de teste e o resultado da execuçãp
-async function relacionaCasodeTeste(testRunId, testCases, testResults) {
-    const url = `https://dev.azure.com/${org}/${project}/_apis/test/Runs/${testRunId}/results?api-version=7.1-preview.6
-`;
-  
-    // Transformar testResults em um array
-    const extractedResults = [];
-    Object.entries(testResults).forEach(([filePath, results]) => {
-      if (typeof results === 'object' && !results.totals) {
-        Object.entries(results).forEach(([testName, outcome]) => {
-          extractedResults.push({
-            testName,
-            outcome,
-            filePath,
-            duration: 0, 
-          });
-        });
-      }
-    });
-  
-    if (!Array.isArray(extractedResults) || extractedResults.length === 0) {
-      console.error('Nenhum resultado de teste encontrado.');
-      return;
-    }
-  
-    const results = extractedResults
-      .map((result) => {
-        const testCase = testCases.find(tc => 'Compra de tickets ' + tc.workItem.name === result.testName);
-  
-        if (testCase) {
-          const now = new Date();
+      if (testCase) {
+        const now = new Date();
+
+        // Aqui você precisa mapear o Test Point corretamente com base no Test Plan
+        const testPoint = testCase.pointAssignments[0].id;
+        if (testPoint) {
           return {
-              "testPoint": { "id": "3" }, 
-              "testCase": {
-                "id": testCase.workItem.id, 
-                "revision": testCase.workItem.revision 
-              },
-              "testCaseTitle": testCase.workItem.name, 
-              "automatedTestName": result.testName,
-              "outcome": result.outcome.charAt(0).toUpperCase() + result.outcome.slice(1), // Garantir que a primeira letra seja maiúscula
-              "state": "Completed",
-              "startedDate": now.toISOString(),
-              "completedDate": now.toISOString()
-            }        
+            id: result.id,
+            project: {
+              id: testCase.project.id,
+              name: testCase.project.name,
+            },
+            priority: testCase.workItem.priority,
+            testPoint: { id: testPoint },
+            testCase: {
+              id: testCase.workItem.id,
+              revision: testCase.workItem.revision
+            },
+            testCaseTitle: testCase.workItem.name,
+            automatedTestName: result.testCaseTitle,
+            outcome: result.outcome,
+            state: "Completed",
+            startedDate: now.toISOString(),
+            completedDate: now.toISOString()
+          };
         }
-  
-       
-        // console.warn(`Caso de teste não encontrado para: "${result.testName}"`);
-        return null;
-      })
-      .filter(Boolean);
-  
-    if (results.length === 0) {
-      console.error('Nenhum resultado de teste pôde ser associado aos casos de teste.');
-      return;
-    }
-  
-     console.log('Payload enviado:', results);
-  
-    try {
-      await axios.post(
-        url,
-        results,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Basic ${Buffer.from(`:${pat}`).toString('base64')}`,
-          },
-        }
-      );
-      console.log('Resultados dos testes associados com sucesso!');
-      
-    } catch (error) {
-      console.error('Erro ao associar resultados:', error.response?.data, error.response?.status);
-      throw error;
-    }
-  }  
+      }
+      return null;
+    })
+    .filter(Boolean);
+
+   
+  if (results.length === 0) {
+    console.error('Nenhum resultado de teste pôde ser associado aos casos de teste.');
+    return;
+  }
+
+  console.log('Payload enviado:', results);
+
+  try {
+    const response = await axios.patch(
+      url,
+      results,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${Buffer.from(`:${pat}`).toString('base64')}`,
+        },
+      }
+    );
+    console.log('Resultados dos testes associados com sucesso!');
+    console.log(response.data);
+  } catch (error) {
+    console.error('Erro ao associar resultados:', error.response?.data || error.message);
+    throw error;
+  }
+}
 
 
+async function finalizarTestRun(testRunId) {
+  const url = `https://dev.azure.com/${org}/${project}/_apis/test/runs/${testRunId}?api-version=7.1-preview.3`;
+  const body = {
+    state: 'Completed',
+  };
+
+  try {
+    await axios.patch(url, body, { auth });
+    console.log(`Test run ${testRunId} finalizado com sucesso.`);
+  } catch (error) {
+    console.error('Erro ao finalizar o test run:', error.response?.data || error.message);
+    throw error;
+  }
+}
+
+
+// Função principal
 async function main() {
   try {
-    // Ler resultados dos testes
-    const testResults = JSON.parse(fs.readFileSync(testResultsFile, 'utf8'));
+    // Buscar test runs
+    console.log('Buscando test runs...')
+    const testRuns = await buscarTestRuns();
 
-    // Buscar casos de teste
-    const testCases = await recuperaCasosdeTeste();
+    // Encontrar o test run específico
+    // Pega o test run com o maior ID
+    const lastTestRun = testRuns
+    .sort((a, b) => b.id - a.id)[0];
 
-    // Criar execução de teste
-    const testRunId = await criaTestRun();
+    const testRunId = lastTestRun.id;
+    // Ajuste o critério conforme necessário
+
+    // Buscar resultados do test run específico
+    console.log('Buscando resultados do test run...')
+    const testRunResults = await buscarResultadosTestRun(testRunId);
+
+    //Abrir test run para fazer a associacao 
+    console.log('Abrindo test run...')
+    await reabrirTestRun(testRunId);
+
+    // Buscar casos de teste no plano
+    console.log('Buscando casos de teste...')
+    const testCases = await buscarCasosDeTeste();
 
     // Associar resultados aos casos de teste
-    // console.log('Tipo de testResults:', typeof testResults);
-    // console.log('Conteúdo de testResults:', testResults);
-    // console.log('Tipo de testCases:', typeof testCases);
-    // console.log('Conteúdo de testCases:', testCases);
-    await relacionaCasodeTeste(testRunId, testCases, testResults);
+    console.log('Associando resultados aos casos de teste...')
+    await associarResultados(testRunResults, testCases);
+
+    //Finallizando test run
+    console.log('Fechando execucao do teste')
+    await finalizarTestRun(testRunId);
+
   } catch (error) {
-    console.error('Erro no processo de associação:');
+    console.error('Erro no processo:', error.message);
   }
 }
 
-// Executar o script
 main();
