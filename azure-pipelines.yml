@@ -18,8 +18,8 @@ steps:
     displayName: 'Rodando testes Cypress'
 
   # Passo 4: Executar script para associar casos de teste
-  - script: node utils/associarTests.js
-    displayName: 'Associar casos de teste'
+  # - script: node utils/associarTests.js
+  #   displayName: 'Associar casos de teste'
 
   # Passo 5: Publicar resultados dos testes no formato JUnit
   - task: PublishTestResults@2
