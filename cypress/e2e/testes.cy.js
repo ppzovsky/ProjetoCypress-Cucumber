@@ -26,7 +26,7 @@ describe('Compra de Tickets', () => {
     cy.escolheOpcaoDeTicket('4','#general', '#publication');
     cy.confirmaTickets();
   })
-  it('Validar Funcionamento do Botao Reset', () => {
+  it('Validar funcionamento do botão Reset', () => {
     cy.preencheDadosPessoais(massa.firstName, massa.lastName, massa.email);
     cy.escolheOpcaoDeTicket('4','#general', '#publication');
     cy.cancelaTickets(massa.firstName, massa.lastName);

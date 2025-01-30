@@ -30,7 +30,7 @@ Funcionalidade: Compra de tickets
     Então a compra é realizada com sucesso
 
   @20
-  Cenário: Validar Funcionamento do Botao Reset
+  Cenário: Validar funcionamento do botão Reset
     Dado que preencho meus dados pessoais com "Teste", "da Silva" e "teste@teste.gamil.com"
     E que escolho a quantidade "1", a opcao "#general" e como eu conheci o evento "#friend"
     Quando cancelo meus tickets

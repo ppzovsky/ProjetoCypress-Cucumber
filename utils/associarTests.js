@@ -33,7 +33,7 @@ async function buscarResultadosTestRun(testRunId) {
   try {
     const response = await axios.get(url, { auth });
     console.log('Resultados do test run encontrados');
-    console.log(response.data.value);
+    // console.log(response.data.value);
     return response.data.value; // Retorna os resultados
   } catch (error) {
     console.error('Erro ao buscar resultados do test run:', error.response?.data || error.message);
@@ -75,8 +75,12 @@ async function buscarCasosDeTeste() {
 async function associarResultados(testRunResults, testCases) {
   const url = `https://dev.azure.com/${org}/${project}/_apis/test/runs?api-version=7.1`;
 
+  for (let i = 0; i < testCases.length; i++) {
+    console.log(testCases[i].workItem.name);
+  }
   for (const result of testRunResults) {
     // Encontrar o caso de teste correspondente
+    console.log(result.automatedTestName)
     const testCase = testCases.find(tc => tc.workItem.name === result.automatedTestName);
 
     if (testCase) {
@@ -90,11 +94,12 @@ async function associarResultados(testRunResults, testCases) {
         const resultado = {
           name: result.testCaseTitle,
           automated: true,
-          pointIds: [testPoint], // Corrigido: pointIds precisa ser um array
+          pointIds: [testPoint], 
           plan: {
             id: testCase.testPlan.id,
           },
-          state: "InProgress", // Melhor iniciar o estado como "InProgress"
+          state: result.state,
+          outcome: result.outcome,
           startedDate: now.toISOString(),
           completedDate: now.toISOString()
         };
@@ -163,15 +168,15 @@ async function main() {
     // console.log('Abrindo test run...')
     // await reabrirTestRun(testRunId);
 
-    // // Buscar casos de teste no plano
-    // console.log('Buscando casos de teste...')
-    // const testCases = await buscarCasosDeTeste();
+    // Buscar casos de teste no plano
+    console.log('Buscando casos de teste...')
+    const testCases = await buscarCasosDeTeste();
 
-    // // Associa os resultados aos casos de teste
-    // console.log('Associando resultados aos casos de teste...')
-    // await associarResultados(testRunResults, testCases);
+    // Associa os resultados aos casos de teste
+    console.log('Associando resultados aos casos de teste...')
+    await associarResultados(testRunResults, testCases);
 
-    // //Finalizando test run
+    //Finalizando test run
     // console.log('Fechando execucao do teste')
     // await finalizarTestRun(testRunId);
 
