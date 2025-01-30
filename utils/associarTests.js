@@ -2,11 +2,11 @@ const axios = require('axios');
 const fs = require('fs');
 
 // Configurações
-const org = 'ppzovsky'; // Organização no Azure DevOps
-const project = 'Estudos%20iLAB'; // Nome do projeto
-const planId = '6'; // ID do plano de testes
-const suiteId = '16'; // ID da suíte de testes
-const pat = 'DBDTHdJ5GUmVWNQW9Hh6Vm45nnCxq3QAcBfiElBHEn2mx5deODHdJQQJ99BAACAAAAASKsUvAAASAZDO7kI1'; // Token de acesso
+const org = 'iLABLLC'; // Organização no Azure DevOps
+const project = 'Portobello%20-%20Migração%20Oracle'; // Nome do projeto
+const planId = '1558'; // ID do plano de testes
+const suiteId = '1559'; // ID da suíte de testes
+const pat = '41AC9RnkhwiJb05J5WqdLWHCbluEq259D1U5DszfIhsgfE4Z75U5JQQJ99BAACAAAAASKsUvAAASAZDOy1fY'; // Token de acesso
 
 const auth = {
   username: 'ppzovsky',
@@ -19,7 +19,7 @@ async function buscarTestRuns() {
   try {
     const response = await axios.get(url, { auth });
     console.log('Test runs encontrados:');
-    console.log(response.data.value);
+    // console.log(response.data.value);
     return response.data.value; // Retorna todos os test runs
   } catch (error) {
     console.error('Erro ao buscar test runs:', error.response?.data || error.message);
@@ -33,7 +33,7 @@ async function buscarResultadosTestRun(testRunId) {
   try {
     const response = await axios.get(url, { auth });
     console.log('Resultados do test run encontrados');
-    console.log(response.data.value);
+    // console.log(response.data.value);
     return response.data.value; // Retorna os resultados
   } catch (error) {
     console.error('Erro ao buscar resultados do test run:', error.response?.data || error.message);
@@ -73,73 +73,55 @@ async function buscarCasosDeTeste() {
 
 // Função para associar os resultados
 async function associarResultados(testRunResults, testCases) {
+  const url = `https://dev.azure.com/${org}/${project}/_apis/test/runs?api-version=7.1`;
 
-  const url = `https://dev.azure.com/${org}/${project}/_apis/test/runs/${testRunResults[0].testRun.id}/results?api-version=7.1-preview.6`;
-  // console.log(testRunResults)
+  for (const result of testRunResults) {
+    // Encontrar o caso de teste correspondente
+    const testCase = testCases.find(tc => tc.workItem.name === result.automatedTestName);
 
-  const results = testRunResults
-    .map((result) => {
-      // Encontrar o caso de teste correspondente
-      const testCase = testCases.find(tc => tc.workItem.name === result.automatedTestName);
+    if (testCase) {
+      const now = new Date();
 
-      if (testCase) {
-        const now = new Date();
+      // Pegar o primeiro testPoint disponível (se existir)
+      const testPoint = testCase.pointAssignments?.[0]?.id;
 
-        //o testpoint é um marcados dos casos de teste que define suas execuções
-        const testPoint = testCase.pointAssignments[0].id;
+      if (testPoint) {
+        // Construir o objeto do Test Run corretamente
+        const resultado = {
+          name: result.testCaseTitle,
+          automated: true,
+          pointIds: [testPoint], 
+          plan: {
+            id: testCase.testPlan.id,
+          },
+          state: "Completed", 
+          startedDate: now.toISOString(),
+          completedDate: now.toISOString()
+        };
 
+        try {
+          const response = await axios.post(
+            url,
+            resultado,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Basic ${Buffer.from(`:${pat}`).toString("base64")}`,
+              },
+            }
+          );
 
-        if (testPoint) {
-          //quando ele existe posso atribuir ele a execução desejada
-          return {
-            id: result.id,
-            project: {
-              id: testCase.project.id,
-              name: testCase.project.name,
-            },
-            priority: testCase.workItem.priority,
-            testPoint: { id: testPoint },
-            testCase: {
-              id: testCase.workItem.id,
-              revision: testCase.workItem.revision
-            },
-            testCaseTitle: testCase.workItem.name,
-            automatedTestName: result.testCaseTitle,
-            outcome: result.outcome,
-            state: "Completed",
-            startedDate: now.toISOString(),
-            completedDate: now.toISOString()
-          };
+          console.log(`Resultado do teste "${result.testCaseTitle}" associado com sucesso!`);
+          console.log(response.data);
+        } catch (error) {
+          console.error(`Erro ao associar resultado ao teste "${result.testCaseTitle}":`, error.response?.data || error.message);
         }
+      } else {
+        console.warn(`Test Point não encontrado para "${result.testCaseTitle}"`);
       }
-      return null;
-    })
-    .filter(Boolean);
-
-   
-  if (results.length === 0) {
-    console.error('Nenhum resultado de teste pôde ser associado aos casos de teste.');
-    return;
-  }
-
-  console.log('Payload enviado:', results);
-
-  try {
-    const response = await axios.patch(
-      url,
-      results,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Basic ${Buffer.from(`:${pat}`).toString('base64')}`,
-        },
-      }
-    );
-    console.log('Resultados dos testes associados com sucesso!');
-    console.log(response.data);
-  } catch (error) {
-    console.error('Erro ao associar resultados:', error.response?.data || error.message);
-    throw error;
+    } else {
+      console.warn(`Test Case não encontrado para "${result.automatedTestName}"`);
+    }
   }
 }
 
