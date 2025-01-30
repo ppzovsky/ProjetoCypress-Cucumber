@@ -114,7 +114,7 @@ async function associarResultados(testRunResults, testCases) {
 
           console.log(`Resultado do teste "${result.testCaseTitle}" associado com sucesso!`);
           console.log(response.data);
-          await atualizarResultadoTeste(response.data.id, testCase.workItem.id, result.outcome);
+          await atualizarResultadoTeste(response.data.id, 100000, result.outcome);
           await finalizarTestRun(response.data.id, result.outcome);
         } catch (error) {
           console.error(`Erro ao associar resultado ao teste "${result.testCaseTitle}":`, error.response?.data || error.message);
