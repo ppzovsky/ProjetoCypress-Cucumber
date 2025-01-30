@@ -33,7 +33,7 @@ async function buscarResultadosTestRun(testRunId) {
   try {
     const response = await axios.get(url, { auth });
     console.log('Resultados do test run encontrados');
-    // console.log(response.data.value);
+    console.log(response.data.value);
     return response.data.value; // Retorna os resultados
   } catch (error) {
     console.error('Erro ao buscar resultados do test run:', error.response?.data || error.message);
@@ -90,11 +90,11 @@ async function associarResultados(testRunResults, testCases) {
         const resultado = {
           name: result.testCaseTitle,
           automated: true,
-          pointIds: [testPoint], 
+          pointIds: [testPoint], // Corrigido: pointIds precisa ser um array
           plan: {
             id: testCase.testPlan.id,
           },
-          state: "Completed", 
+          state: "InProgress", // Melhor iniciar o estado como "InProgress"
           startedDate: now.toISOString(),
           completedDate: now.toISOString()
         };
@@ -160,20 +160,20 @@ async function main() {
     const testRunResults = await buscarResultadosTestRun(testRunId);
 
     //Muda o status do test run para fazer a associacao 
-    console.log('Abrindo test run...')
-    await reabrirTestRun(testRunId);
+    // console.log('Abrindo test run...')
+    // await reabrirTestRun(testRunId);
 
-    // Buscar casos de teste no plano
-    console.log('Buscando casos de teste...')
-    const testCases = await buscarCasosDeTeste();
+    // // Buscar casos de teste no plano
+    // console.log('Buscando casos de teste...')
+    // const testCases = await buscarCasosDeTeste();
 
-    // Associa os resultados aos casos de teste
-    console.log('Associando resultados aos casos de teste...')
-    await associarResultados(testRunResults, testCases);
+    // // Associa os resultados aos casos de teste
+    // console.log('Associando resultados aos casos de teste...')
+    // await associarResultados(testRunResults, testCases);
 
-    //Finalizando test run
-    console.log('Fechando execucao do teste')
-    await finalizarTestRun(testRunId);
+    // //Finalizando test run
+    // console.log('Fechando execucao do teste')
+    // await finalizarTestRun(testRunId);
 
   } catch (error) {
     console.error('Erro no processo:', error.message);

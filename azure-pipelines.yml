@@ -33,6 +33,6 @@ steps:
       publishLocation: 'pipeline'
     condition: succeededOrFailed() # Publica artefatos mesmo se alguns testes falharem
 
-  # Passo 6: Executar script para associar casos de teste
-  - script: node utils/associarTests.js
-    displayName: 'Associar casos de teste'
+  # # Passo 6: Executar script para associar casos de teste
+  # - script: node utils/associarTests.js
+  #   displayName: 'Associar casos de teste'
