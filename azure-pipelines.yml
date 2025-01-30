@@ -35,4 +35,4 @@ steps:
 
   # Passo 6: Executar script para associar casos de teste
   - script: node utils/associarTests.js
-   displayName: 'Associar casos de teste'
+    displayName: 'Associar casos de teste'
