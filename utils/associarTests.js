@@ -113,7 +113,7 @@ async function associarResultados(testRunResults, testCases) {
           );
 
           console.log(`Resultado do teste "${result.testCaseTitle}" associado com sucesso!`);
-          console.log(response.data);
+          // console.log(response.data);
           await atualizarResultadoTeste(response.data.id, 100000, result.outcome);
           await finalizarTestRun(response.data.id, result.outcome);
         } catch (error) {
@@ -131,10 +131,11 @@ async function associarResultados(testRunResults, testCases) {
 //Funcao para atualizar o resultado do teste (se passou ou falhou)
 async function atualizarResultadoTeste(testRunId, testCaseId, result) {
   const url = `https://dev.azure.com/${org}/${project}/_apis/test/Runs/${testRunId}/results?api-version=7.1-preview.6`;
-  console.log(result)
   const body = [{
-    id: testCaseId,
+    id: 100000,
     outcome: result,
+    state: 'Completed',
+    comment: 'Resultado definido via API'
   }];
 
   try {
@@ -154,7 +155,7 @@ async function finalizarTestRun(testRunId) {
 
   try {
     const response = await axios.patch(url, body, { auth });
-    console.log(`Test run ${testRunId} finalizado com sucesso.`, response.data);
+    console.log(`Test run ${testRunId} finalizado com sucesso.`);
   } catch (error) {
     console.error('Erro ao finalizar o test run:', error.response?.data || error.message);
     throw error;
